@@ -1,11 +1,1329 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello my name is Yessica</title>
+    <title>BMKG - Cuaca Saat Ini</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- RESET DASAR --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        /* --- HEADER & TOP BAR --- */
+        .top-bar {
+            background-color: #f8f9fa;
+            padding: 5px 20px;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            color: #666;
+        }
+
+        header {
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            position: fixed;
+            top: 40px;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            background: white;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            width: 50px; /* Placeholder ukuran logo */
+            height: 50px;
+            background-color: #ddd; /* Ganti dengan src gambar asli jika ada */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            text-align: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+        }
+
+
+        /* --- KONTEN UTAMA --- */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 20px 40px;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 90px 10px 20px;
+            }
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #1a1a1a;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .filter-btn {
+                padding: 6px 16px;
+                font-size: 0.85rem;
+                white-space: nowrap;
+            }
+        }
+
+        .filter-btn.active {
+            background-color: #eef2ff;
+            border-color: #4a69bd;
+            color: #4a69bd;
+        }
+
+        .view-all {
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* --- PERINGATAN DINI (KOTAK ORANGE) --- */
+        .warning-box {
+            background-color: #fff8e1;
+            border: 1px solid #ffe0b2;
+            border-left: 5px solid #ff9800;
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .warning-icon {
+            color: #ff9800;
+            font-size: 1.5rem;
+            margin-top: 2px;
+        }
+
+        .warning-content h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .warning-content p {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .warning-nav {
+            margin-left: auto;
+            color: #ff9800;
+            cursor: pointer;
+        }
+
+        /* --- KARTU CUACA (WEATHER CARDS) --- */
+        .weather-container {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto; /* Agar bisa di-scroll horizontal */
+            padding-bottom: 20px;
+            /* Sembunyikan scrollbar default agar rapi */
+            scrollbar-width: thin; 
+        }
+
+        .weather-card {
+            min-width: 220px;
+            background-color: #f0f6fc; /* Warna biru muda pucat */
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .weather-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .city-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .time-info {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .weather-icon-large {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        /* Warna icon dinamis */
+        .icon-rain { color: #7f8c8d; }
+        .icon-cloud { color: #95a5a6; }
+        .icon-sun { color: #f1c40f; }
+
+        .temp {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .condition {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .card-arrow {
+            align-self: flex-end;
+            background-color: #0056b3;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            text-decoration: none;
+        }
+
+        /* --- NAVIGASI SLIDER --- */
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .nav-left { left: 10px; }
+        .nav-right { right: 10px; }
+
+        /* Media Queries untuk Mobile Optimization */
+        @media (max-width: 768px) {
+            .top-bar {
+                padding: 5px 5px;
+                font-size: 0.75rem;
+            }
+
+            header {
+                padding: 8px 10px;
+                top: 30px;
+            }
+
+            .section-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .weather-card {
+                min-width: 180px;
+            }
+
+            .warning-box {
+                padding: 15px;
+            }
+
+            .warning-icon {
+                font-size: 1.2rem;
+            }
+
+            .temp {
+                font-size: 1.8rem;
+            }
+
+            .condition {
+                font-size: 0.8rem;
+            }
+
+            section {
+                margin-top: 2rem;
+                margin-bottom: 2rem;
+            }
+        }
+
+        /* Touch scroll indicator untuk mobile */
+        @media (hover: none) and (pointer: coarse) {
+            .weather-container::after,
+            #weather-scroll::after {
+                content: '→ Swipe';
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: rgba(0,0,0,0.6);
+                color: white;
+                padding: 5px 10px;
+                border-radius: 15px;
+                font-size: 0.75rem;
+                pointer-events: none;
+                animation: fadeOut 3s forwards;
+            }
+
+            @keyframes fadeOut {
+                0% { opacity: 1; }
+                70% { opacity: 1; }
+                100% { opacity: 0; }
+            }
+        }
+    </style>
 </head>
-    <body>
-        <h1>Yessica</h1>
-    </body>
+<body>
+
+    <div class="bg-slate-100 text-xs md:text-sm border-b border-gray-200 py-2 px-4 md:px-8 flex flex-col md:flex-row justify-between items-center font-medium font-sans" style="position: fixed; top: 0; left: 0; right: 0; z-index: 20;">
+
+        <div id="header-date" class="text-slate-500 uppercase tracking-wide mb-1 md:mb-0 font-bold">
+            MINGGU, 7 DESEMBER 2025
+        </div>
+
+        <div class="flex items-center gap-2 text-slate-600">
+            <span class="hidden md:inline font-bold text-slate-500">STANDAR WAKTU INDONESIA</span>
+
+            <div class="flex items-center gap-1 font-bold">
+                <span id="time-wib" class="text-green-600 text-base">-- : -- : --</span>
+
+                <span class="text-slate-400 mx-1">/</span>
+
+                <span id="time-utc" class="text-green-600 text-base">-- : -- : -- UTC</span>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="logo-section">
+            <div class="logo-img"><img src="bmkg.png" alt="BMKG Logo" class="w-full h-full rounded-full object-cover"></div> <div>
+                <h3 style="font-size: 0.9rem;">BADAN METEOROLOGI,</h3>
+                <h3 style="font-size: 0.9rem;">KLIMATOLOGI, DAN GEOFISIKA</h3>
+            </div>
+        </div>
+
+        <button id="hamburger-btn" class="md:hidden text-gray-600 hover:text-blue-600 transition-colors duration-300 p-2">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+
+        <nav id="nav-menu" class="hidden md:flex absolute md:relative top-full md:top-auto left-0 md:left-auto right-0 md:right-auto bg-white md:bg-transparent shadow-lg md:shadow-none p-4 md:p-0 z-10">
+            <ul class="flex flex-col md:flex-row gap-4 md:gap-20">
+                <li><a href="index.html" class="text-gray-600 hover:text-blue-600 transition-colors duration-300 block py-2 md:py-0">Home</a></li>
+                <li><a href="biodata.html" class="text-gray-600 hover:text-blue-600 transition-colors duration-300 block py-2 md:py-0">Biodata</a></li>
+                <li><a href="contact_us.html" class="text-gray-600 hover:text-blue-600 transition-colors duration-300 block py-2 md:py-0">Contact Us</a></li>
+                <li><a href="posts.html" class="text-gray-600 hover:text-blue-600 transition-colors duration-300 block py-2 md:py-0">Posts</a></li>
+                <li><a href="freepage.html" class="text-gray-600 hover:text-blue-600 transition-colors duration-300 block py-2 md:py-0">Mini Portofolio</a></li>
+                <li><a href="https://fti.unai.edu/" class="text-gray-600 hover:text-blue-600 transition-colors duration-300 block py-2 md:py-0">FTI UNAI</a></li>
+                <li><a href="https://unai.edu/" class="text-gray-600 hover:text-blue-600 transition-colors duration-300 block py-2 md:py-0">UNAI</a></li>
+            </ul>
+        </nav>
+
+        <button class="border border-gray-300 px-4 py-2 rounded-full bg-white hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all duration-300 flex items-center gap-2 cursor-pointer">
+            <i class="fas fa-phone-alt"></i> Contact Center 196
+        </button>
+    </header>
+
+    <main>
+        <div class="flex justify-between items-end mb-6">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-800">Cuaca Saat Ini</h2>
+            </div>
+            <a href="#" class="text-blue-600 font-semibold hover:underline flex items-center gap-1">
+                Lihat Semuanya <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="bg-[#fff9f0] border border-orange-200 rounded-xl mb-8 flex items-stretch shadow-sm relative overflow-hidden">
+
+            <button id="btn-prev-warning" class="hidden md:flex items-center justify-center px-4 text-orange-400 hover:bg-orange-100 hover:text-orange-600 border-r border-orange-200 transition cursor-pointer z-10">
+                <i class="fas fa-chevron-left text-xl"></i>
+            </button>
+
+            <div class="flex-grow overflow-hidden relative py-4 px-2 md:px-4">
+
+                <div id="warning-track" class="flex transition-transform duration-500 ease-in-out w-full">
+
+                    <div class="min-w-full flex items-start gap-4 px-2 box-border">
+                        <div class="text-orange-500 text-2xl mt-1 flex-shrink-0">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 text-sm md:text-base">Peringatan Dini Cuaca Nusa Tenggara Timur</h3>
+                            <p class="text-xs md:text-sm text-gray-600 mt-1 leading-relaxed">
+                                7 Des 2025 pukul 16.10-19.00 WITA: Berpotensi terjadi hujan sedang hingga lebat disertai petir dan angin kencang di beberapa wilayah Nusa Tenggara Timur.
+                                <a href="#" class="text-blue-600 font-semibold hover:underline ml-1">Selengkapnya &rightarrow;</a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="min-w-full flex items-start gap-4 px-2 box-border">
+                        <div class="text-orange-500 text-2xl mt-1 flex-shrink-0">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 text-sm md:text-base">Peringatan Dini Cuaca Kalimantan Tengah</h3>
+                            <p class="text-xs md:text-sm text-gray-600 mt-1 leading-relaxed">
+                                7 Des 2025 pukul 13.44-16.00 WIB: Berpotensi terjadi hujan sedang hingga lebat disertai petir dan angin kencang di beberapa wilayah Kalimantan Tengah.
+                                <a href="#" class="text-blue-600 font-semibold hover:underline ml-1">Selengkapnya &rightarrow;</a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="min-w-full flex items-start gap-4 px-2 box-border">
+                        <div class="text-orange-500 text-2xl mt-1 flex-shrink-0">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 text-sm md:text-base">Peringatan Dini Cuaca Sulawesi Selatan</h3>
+                            <p class="text-xs md:text-sm text-gray-600 mt-1 leading-relaxed">
+                                7 Des 2025 pukul 16.00-18.00 WITA: Berpotensi terjadi hujan sedang hingga lebat disertai petir dan angin kencang di beberapa wilayah Sulawesi Selatan.
+                                <a href="#" class="text-blue-600 font-semibold hover:underline ml-1">Selengkapnya &rightarrow;</a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="min-w-full flex items-start gap-4 px-2 box-border">
+                        <div class="text-orange-500 text-2xl mt-1 flex-shrink-0">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 text-sm md:text-base">Peringatan Dini Cuaca Jawa Barat</h3>
+                            <p class="text-xs md:text-sm text-gray-600 mt-1 leading-relaxed">
+                                7 Des 2025 pukul 14.00-17.00 WIB: Waspada potensi hujan yang dapat disertai kilat/petir dan angin kencang di sebagian wilayah Kab dan Kota Bogor.
+                                <a href="#" class="text-blue-600 font-semibold hover:underline ml-1">Selengkapnya &rightarrow;</a>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <button id="btn-next-warning" class="hidden md:flex items-center justify-center px-4 text-orange-400 hover:bg-orange-100 hover:text-orange-600 border-l border-orange-200 transition cursor-pointer z-10">
+                <i class="fas fa-chevron-right text-xl"></i>
+            </button>
+
+            <button id="btn-prev-warning-mob" class="md:hidden absolute left-0 top-0 bottom-0 px-2 text-orange-400 bg-white/50 hover:bg-white flex items-center">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button id="btn-next-warning-mob" class="md:hidden absolute right-0 top-0 bottom-0 px-2 text-orange-400 bg-white/50 hover:bg-white flex items-center">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
+        </div>
+
+        <div class="relative group">
+
+            <button id="btn-prev-weather" class="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 z-20 bg-white text-gray-500 w-10 h-10 rounded-full shadow-lg border border-gray-100 flex items-center justify-center hover:text-blue-600 hover:scale-110 transition hidden md:flex">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+
+            <div id="weather-scroll" class="flex gap-4 overflow-x-auto pb-4 pt-2 scrollbar-hide scroll-smooth">
+
+                <div class="min-w-[220px] bg-blue-50/50 rounded-2xl p-6 flex flex-col justify-between hover:shadow-md transition duration-300 border border-blue-100">
+                    <div>
+                        <h4 class="font-bold text-lg">Padang</h4>
+                        <p class="text-xs text-gray-500 mb-4">15.30 WIB</p>
+                        <i class="fas fa-cloud-showers-heavy text-4xl text-gray-400 mb-2"></i>
+                        <h2 class="text-3xl font-bold text-gray-800">26°C</h2>
+                        <p class="text-sm text-gray-600">Hujan Ringan</p>
+                    </div>
+                    <div class="mt-4 text-right">
+                         <i class="fas fa-arrow-circle-right text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+
+                <div class="min-w-[220px] bg-blue-50/50 rounded-2xl p-6 flex flex-col justify-between hover:shadow-md transition duration-300 border border-blue-100">
+                    <div>
+                        <h4 class="font-bold text-lg">Palangkaraya</h4>
+                        <p class="text-xs text-gray-500 mb-4">15.30 WIB</p>
+                        <i class="fas fa-cloud text-4xl text-gray-400 mb-2"></i>
+                        <h2 class="text-3xl font-bold text-gray-800">29°C</h2>
+                        <p class="text-sm text-gray-600">Berawan</p>
+                    </div>
+                    <div class="mt-4 text-right">
+                         <i class="fas fa-arrow-circle-right text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+
+                <div class="min-w-[220px] bg-blue-50/50 rounded-2xl p-6 flex flex-col justify-between hover:shadow-md transition duration-300 border border-blue-100">
+                    <div>
+                        <h4 class="font-bold text-lg">Palembang</h4>
+                        <p class="text-xs text-gray-500 mb-4">15.30 WIB</p>
+                        <i class="fas fa-cloud-sun text-4xl text-gray-400 mb-2"></i>
+                        <h2 class="text-3xl font-bold text-gray-800">25°C</h2>
+                        <p class="text-sm text-gray-600">Berawan Tebal</p>
+                    </div>
+                    <div class="mt-4 text-right">
+                         <i class="fas fa-arrow-circle-right text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+
+                <div class="min-w-[220px] bg-blue-50/50 rounded-2xl p-6 flex flex-col justify-between hover:shadow-md transition duration-300 border border-blue-100">
+                    <div>
+                        <h4 class="font-bold text-lg">Palu</h4>
+                        <p class="text-xs text-gray-500 mb-4">16.30 WITA</p>
+                        <i class="fas fa-sun text-4xl text-yellow-500 mb-2"></i>
+                        <h2 class="text-3xl font-bold text-gray-800">27°C</h2>
+                        <p class="text-sm text-gray-600">Cerah</p>
+                    </div>
+                    <div class="mt-4 text-right">
+                         <i class="fas fa-arrow-circle-right text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+
+                <div class="min-w-[220px] bg-blue-50/50 rounded-2xl p-6 flex flex-col justify-between hover:shadow-md transition duration-300 border border-blue-100">
+                    <div>
+                        <h4 class="font-bold text-lg">Pangkal Pinang</h4>
+                        <p class="text-xs text-gray-500 mb-4">15.30 WIB</p>
+                        <i class="fas fa-cloud-rain text-4xl text-gray-400 mb-2"></i>
+                        <h2 class="text-3xl font-bold text-gray-800">28°C</h2>
+                        <p class="text-sm text-gray-600">Hujan Ringan</p>
+                    </div>
+                    <div class="mt-4 text-right">
+                         <i class="fas fa-arrow-circle-right text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+
+                <div class="min-w-[220px] bg-blue-50/50 rounded-2xl p-6 flex flex-col justify-between hover:shadow-md transition duration-300 border border-blue-100">
+                    <div>
+                        <h4 class="font-bold text-lg">Pekanbaru</h4>
+                        <p class="text-xs text-gray-500 mb-4">15.30 WIB</p>
+                        <i class="fas fa-cloud-showers-heavy text-4xl text-gray-400 mb-2"></i>
+                        <h2 class="text-3xl font-bold text-gray-800">29°C</h2>
+                        <p class="text-sm text-gray-600">Hujan Ringan</p>
+                    </div>
+                    <div class="mt-4 text-right">
+                         <i class="fas fa-arrow-circle-right text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+
+                <div class="min-w-[220px] bg-blue-50/50 rounded-2xl p-6 flex flex-col justify-between hover:shadow-md transition duration-300 border border-blue-100">
+                    <div>
+                        <h4 class="font-bold text-lg">Jakarta</h4>
+                        <p class="text-xs text-gray-500 mb-4">15.30 WIB</p>
+                        <i class="fas fa-cloud-sun text-4xl text-gray-500 mb-2"></i>
+                        <h2 class="text-3xl font-bold text-gray-800">31°C</h2>
+                        <p class="text-sm text-gray-600">Cerah Berawan</p>
+                    </div>
+                    <div class="mt-4 text-right">
+                         <i class="fas fa-arrow-circle-right text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+
+                <div class="min-w-[220px] bg-blue-50/50 rounded-2xl p-6 flex flex-col justify-between hover:shadow-md transition duration-300 border border-blue-100">
+                    <div>
+                        <h4 class="font-bold text-lg">Bandung</h4>
+                        <p class="text-xs text-gray-500 mb-4">15.30 WIB</p>
+                        <i class="fas fa-bolt text-4xl text-yellow-600 mb-2"></i>
+                        <h2 class="text-3xl font-bold text-gray-800">24°C</h2>
+                        <p class="text-sm text-gray-600">Hujan Petir</p>
+                    </div>
+                    <div class="mt-4 text-right">
+                         <i class="fas fa-arrow-circle-right text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+
+                <div class="min-w-[220px] bg-blue-50/50 rounded-2xl p-6 flex flex-col justify-between hover:shadow-md transition duration-300 border border-blue-100">
+                    <div>
+                        <h4 class="font-bold text-lg">Surabaya</h4>
+                        <p class="text-xs text-gray-500 mb-4">15.30 WIB</p>
+                        <i class="fas fa-sun text-4xl text-yellow-500 mb-2"></i>
+                        <h2 class="text-3xl font-bold text-gray-800">33°C</h2>
+                        <p class="text-sm text-gray-600">Cerah</p>
+                    </div>
+                    <div class="mt-4 text-right">
+                         <i class="fas fa-arrow-circle-right text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+
+                <div class="min-w-[220px] bg-blue-50/50 rounded-2xl p-6 flex flex-col justify-between hover:shadow-md transition duration-300 border border-blue-100">
+                    <div>
+                        <h4 class="font-bold text-lg">Denpasar</h4>
+                        <p class="text-xs text-gray-500 mb-4">16.30 WITA</p>
+                        <i class="fas fa-cloud-sun text-4xl text-gray-400 mb-2"></i>
+                        <h2 class="text-3xl font-bold text-gray-800">30°C</h2>
+                        <p class="text-sm text-gray-600">Cerah Berawan</p>
+                    </div>
+                    <div class="mt-4 text-right">
+                         <i class="fas fa-arrow-circle-right text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+
+            </div>
+
+            <button id="btn-next-weather" class="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 z-20 bg-white text-gray-500 w-10 h-10 rounded-full shadow-lg border border-gray-100 flex items-center justify-center hover:text-blue-600 hover:scale-110 transition hidden md:flex">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
+        </div>
+
+    <section class="mt-12">
+        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 md:p-10">
+            <div class="flex flex-col lg:flex-row gap-10 items-center">
+                
+                <div class="w-full lg:w-1/3">
+                    <div class="relative rounded-2xl overflow-hidden border border-gray-200 group cursor-pointer">
+                        <img src="intensity_logo.jpg"
+                             onerror="this.src='https://placehold.co/400x500/e2e8f0/1e293b?text=Peta+Gempa+BMKG'"
+                             alt="Peta Gempa"
+                             class="w-full h-auto object-cover transform transition duration-500 group-hover:scale-105">
+    
+                        <div class="absolute top-4 right-4 bg-white/90 p-2 rounded-lg text-gray-500 shadow-sm">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+    
+                        <img src="intensity_logo.jpg" alt="Intensity Logo" class="absolute bottom-4 left-4 w-16 h-16 opacity-80 rounded">
+                    </div>
+                </div>
+
+                <div class="w-full lg:w-2/3">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Gempa Bumi Terkini</h2>
+                    <p class="text-gray-500 text-sm mb-4">07 Des 2025, 11:55:55 WIB</p>
+                    
+                    <span class="inline-block bg-orange-100 text-orange-500 px-4 py-1.5 rounded-full text-sm font-bold mb-8">
+                        Tidak Berpotensi Tsunami
+                    </span>
+
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold text-gray-800">150 km BaratLaut TANIMBAR</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                        <div class="border border-gray-200 rounded-xl p-4 hover:border-blue-400 transition bg-white">
+                            <span class="text-gray-400 text-xs block mb-1">Magnitudo:</span>
+                            <div class="flex items-center gap-2 text-gray-800 font-bold text-xl">
+                                <i class="fas fa-heart-pulse text-red-500 text-sm"></i> 5,4
+                            </div>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-xl p-4 hover:border-blue-400 transition bg-white">
+                            <span class="text-gray-400 text-xs block mb-1">Kedalaman:</span>
+                            <div class="flex items-center gap-2 text-gray-800 font-bold text-xl">
+                                <i class="fas fa-layer-group text-green-500 text-sm"></i> 103 Km
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-xl p-4 hover:border-blue-400 transition bg-white">
+                            <span class="text-gray-400 text-xs block mb-1">Koordinat Lokasi:</span>
+                            <div class="flex items-center gap-2 text-gray-800 font-bold text-sm">
+                                <i class="fas fa-map-marker-alt text-orange-500 text-sm"></i> 6,62 LS - 131,16 BT
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            <span class="text-blue-600 font-bold">Saran BMKG:</span> 
+                            Hati-hati terhadap gempabumi susulan yang mungkin terjadi
+                        </p>
+                        
+                        <a href="#" class="inline-flex items-center gap-2 text-blue-600 font-bold hover:gap-3 transition-all text-sm">
+                            Lihat Semuanya <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    <section class="mt-12 mb-16">
+        
+        <div class="flex justify-between items-end mb-6">
+            <h2 class="text-3xl font-bold text-gray-800">Kualitas Udara</h2>
+            <a href="#" class="text-blue-600 font-semibold hover:underline flex items-center gap-1 text-sm md:text-base">
+                Lihat Semuanya <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="relative group">
+            <div class="flex gap-4 overflow-x-auto pb-8 pt-2 scrollbar-hide px-1">
+                
+                <div class="min-w-[180px] md:min-w-[200px] bg-green-50/50 rounded-2xl p-6 text-center border border-green-100 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+                    <h4 class="font-bold text-gray-800 text-lg">Kota Jambi</h4>
+                    <p class="text-xs text-gray-500 mb-5">14.00 WIB</p>
+                    <div class="w-20 h-20 mx-auto rounded-full border-[3px] border-green-500 flex items-center justify-center mb-4 bg-white shadow-sm">
+                        <i class="fas fa-smile text-4xl text-green-500"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-1">7,8</h2>
+                    <p class="text-sm font-bold text-gray-700">Baik</p>
+                </div>
+
+                <div class="min-w-[180px] md:min-w-[200px] bg-green-50/50 rounded-2xl p-6 text-center border border-green-100 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+                    <h4 class="font-bold text-gray-800 text-lg">Samarinda</h4>
+                    <p class="text-xs text-gray-500 mb-5">14.00 WIB</p>
+                    <div class="w-20 h-20 mx-auto rounded-full border-[3px] border-green-500 flex items-center justify-center mb-4 bg-white shadow-sm">
+                        <i class="fas fa-smile text-4xl text-green-500"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-1">6,8</h2>
+                    <p class="text-sm font-bold text-gray-700">Baik</p>
+                </div>
+
+                <div class="min-w-[180px] md:min-w-[200px] bg-green-50/50 rounded-2xl p-6 text-center border border-green-100 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+                    <h4 class="font-bold text-gray-800 text-lg">Mempawah</h4>
+                    <p class="text-xs text-gray-500 mb-5">14.00 WIB</p>
+                    <div class="w-20 h-20 mx-auto rounded-full border-[3px] border-green-500 flex items-center justify-center mb-4 bg-white shadow-sm">
+                        <i class="fas fa-smile text-4xl text-green-500"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-1">6,1</h2>
+                    <p class="text-sm font-bold text-gray-700">Baik</p>
+                </div>
+
+                <div class="min-w-[180px] md:min-w-[200px] bg-green-50/50 rounded-2xl p-6 text-center border border-green-100 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+                    <h4 class="font-bold text-gray-800 text-lg">Pangkalanbun</h4>
+                    <p class="text-xs text-gray-500 mb-5">14.00 WIB</p>
+                    <div class="w-20 h-20 mx-auto rounded-full border-[3px] border-green-500 flex items-center justify-center mb-4 bg-white shadow-sm">
+                        <i class="fas fa-smile text-4xl text-green-500"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-1">4,1</h2>
+                    <p class="text-sm font-bold text-gray-700">Baik</p>
+                </div>
+
+                <div class="min-w-[180px] md:min-w-[200px] bg-green-50/50 rounded-2xl p-6 text-center border border-green-100 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+                    <h4 class="font-bold text-gray-800 text-lg">Palangkaraya</h4>
+                    <p class="text-xs text-gray-500 mb-5">14.00 WIB</p>
+                    <div class="w-20 h-20 mx-auto rounded-full border-[3px] border-green-500 flex items-center justify-center mb-4 bg-white shadow-sm">
+                        <i class="fas fa-smile text-4xl text-green-500"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-1">3,7</h2>
+                    <p class="text-sm font-bold text-gray-700">Baik</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mt-16 mb-24">
+
+        <div class="text-center mb-10">
+            <p class="text-blue-600 font-bold text-xs md:text-sm tracking-wider uppercase mb-2">PEMUTAKHIRAN 07 DESEMBER 2025</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Visualisasi Cuaca dan Iklim</h2>
+            <p class="text-gray-500">Informasi Cuaca dan Iklim dalam Visualisasi Citra</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 group">
+
+                <div class="h-56 w-full relative bg-gray-100 overflow-hidden">
+                    <div class="absolute top-3 right-3 z-10 bg-black/50 p-1.5 rounded text-white text-xs backdrop-blur-sm">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                    <img src="angin.png"
+                         alt="Citra Satelit"
+                         class="w-full h-full object-cover transform transition duration-500 group-hover:scale-110">
+                </div>
+
+                <div class="p-5 text-center bg-white border-t border-gray-100">
+                    <h3 class="font-bold text-gray-800 text-lg">Citra Satelit</h3>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 group">
+
+                <div class="h-56 w-full relative bg-gray-100 overflow-hidden">
+                    <div class="absolute top-3 right-3 z-10 bg-black/50 p-1.5 rounded text-white text-xs backdrop-blur-sm">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                    <img src="hujan.png"
+                         alt="Prakiraan Tinggi Gelombang"
+                         class="w-full h-full object-cover transform transition duration-500 group-hover:scale-110 opacity-90">
+                </div>
+
+                <div class="p-5 text-center bg-white border-t border-gray-100">
+                    <h3 class="font-bold text-gray-800 text-lg">Prakiraan Tinggi Gelombang</h3>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 group">
+
+                <div class="h-56 w-full relative bg-gray-100 overflow-hidden">
+                    <div class="absolute top-3 right-3 z-10 bg-black/50 p-1.5 rounded text-white text-xs backdrop-blur-sm">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                    <img src="angin2.webp"
+                         alt="Prakiraan Angin"
+                         class="w-full h-full object-cover transform transition duration-500 group-hover:scale-110">
+                </div>
+
+                <div class="p-5 text-center bg-white border-t border-gray-100">
+                    <h3 class="font-bold text-gray-800 text-lg">Prakiraan Angin</h3>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="flex justify-center items-center gap-8 md:gap-14 text-gray-400 text-2xl md:text-3xl mt-10 flex-wrap">
+            <a href="#" class="hover:text-blue-600 transition hover:scale-110 flex flex-col items-center gap-2 group">
+                <i class="fas fa-umbrella"></i>
+            </a>
+            <a href="#" class="hover:text-yellow-500 transition hover:scale-110 flex flex-col items-center gap-2 group">
+                <i class="fas fa-sun"></i>
+            </a>
+            <a href="#" class="hover:text-green-600 transition hover:scale-110 flex flex-col items-center gap-2 group">
+                <i class="fas fa-globe-asia"></i>
+            </a>
+            <a href="#" class="hover:text-blue-400 transition hover:scale-110 flex flex-col items-center gap-2 group">
+                <i class="fas fa-water"></i>
+            </a>
+            <a href="#" class="text-blue-600 scale-110 flex flex-col items-center gap-2 relative">
+                <i class="fas fa-wind"></i>
+                <span class="absolute -bottom-4 w-1.5 h-1.5 bg-blue-600 rounded-full"></span>
+            </a>
+            <a href="#" class="hover:text-red-500 transition hover:scale-110 flex flex-col items-center gap-2 group">
+                <i class="fas fa-fire"></i>
+            </a>
+        </div>
+
+    </section>
+    <section class="mt-16 mb-24">
+
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-900">Akses Informasi Lainnya</h2>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+
+            <div class="bg-white rounded-2xl border border-gray-200 p-8 h-48 flex flex-col justify-between hover:shadow-lg hover:border-blue-200 transition-all cursor-pointer group">
+                <div>
+                    <i class="fas fa-plane-departure text-4xl text-gray-700 group-hover:text-blue-600 transition"></i>
+                </div>
+                <h3 class="font-bold text-gray-800 text-lg group-hover:text-blue-600 transition">Cuaca Bandara</h3>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-gray-200 p-8 h-48 flex flex-col justify-between hover:shadow-lg hover:border-blue-200 transition-all cursor-pointer group">
+                <div class="flex gap-1">
+                    <i class="fas fa-tint text-4xl text-gray-700 group-hover:text-blue-600 transition"></i>
+                    <i class="fas fa-tint text-2xl text-gray-700 group-hover:text-blue-600 transition mt-2"></i>
+                </div>
+                <h3 class="font-bold text-gray-800 text-lg group-hover:text-blue-600 transition">Prediksi Musim</h3>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-gray-200 p-8 h-48 flex flex-col justify-between hover:shadow-lg hover:border-blue-200 transition-all cursor-pointer group">
+                <div>
+                    <i class="fas fa-wifi text-4xl text-gray-700 group-hover:text-blue-600 transition transform rotate-45"></i>
+                </div>
+                <h3 class="font-bold text-gray-800 text-lg group-hover:text-blue-600 transition leading-tight">Ulasan Guncangan Tanah</h3>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-gray-200 p-8 h-48 flex flex-col justify-between hover:shadow-lg hover:border-blue-200 transition-all cursor-pointer group">
+                <div>
+                    <i class="far fa-compass text-4xl text-gray-700 group-hover:text-blue-600 transition"></i>
+                </div>
+                <h3 class="font-bold text-gray-800 text-lg group-hover:text-blue-600 transition">Magnet Bumi</h3>
+            </div>
+
+        </div>
+    </section>
+    <section class="mt-16 mb-24">
+
+        <div class="text-center mb-10">
+            <span class="text-blue-600 font-bold text-xs tracking-wider uppercase mb-2 block">BERITA</span>
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Berita Terbaru</h2>
+            <p class="text-gray-500 text-sm">Berita Utama, Kegiatan, dan Daerah Terbaru dari BMKG</p>
+
+            <div class="flex justify-center gap-3 mt-6 flex-wrap">
+                <button class="px-6 py-2 bg-blue-50 text-blue-600 font-bold rounded-full border border-blue-200 shadow-sm text-sm hover:bg-blue-100 transition">
+                    Berita Utama
+                </button>
+                <button class="px-6 py-2 bg-white text-gray-500 font-medium rounded-full border border-gray-200 hover:bg-gray-50 text-sm transition">
+                    Berita Kegiatan
+                </button>
+                <button class="px-6 py-2 bg-white text-gray-500 font-medium rounded-full border border-gray-200 hover:bg-gray-50 text-sm transition">
+                    Berita Daerah
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 group h-full flex flex-col">
+                <div class="h-64 overflow-hidden relative">
+                    <img src="berita 1.png"
+                         alt="Berita Utama"
+                         class="w-full h-full object-cover transform transition duration-500 group-hover:scale-105">
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <span class="text-gray-400 text-xs font-semibold mb-2 block">06 Desember 2025</span>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition leading-snug">
+                        Kepala BMKG Tinjau Kesiapan Balai Besar MKG Wilayah IV Makassar, Fokuskan Penguatan Kelembagaan
+                    </h3>
+                    <p class="text-gray-500 text-sm line-clamp-3 mb-6 flex-grow">
+                        Kepala Badan Meteorologi, Klimatologi, dan Geofisika (BMKG), melakukan rangkaian kunjungan intensif ke sejumlah Unit Pelaksana Teknis (UPT) di Makassar untuk memastikan kesiapan operasional jelang akhir tahun.
+                    </p>
+                    <a href="#" class="text-blue-600 font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all mt-auto">
+                        Baca selengkapnya <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-6">
+
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col sm:flex-row h-full">
+                    <div class="sm:w-1/3 h-48 sm:h-auto relative overflow-hidden">
+                        <img src="berita2.png"
+                             alt="Berita 1"
+                             class="absolute inset-0 w-full h-full object-cover transform transition duration-500 group-hover:scale-105">
+                    </div>
+                    <div class="p-5 sm:w-2/3 flex flex-col justify-center">
+                        <span class="text-gray-400 text-xs font-semibold mb-2 block">04 Desember 2025</span>
+                        <h3 class="text-base font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition leading-snug">
+                            Matangkan Earthquake Early Warning System (EEWS), BMKG Himpun Masukan untuk Penguatan Sistem
+                        </h3>
+                        <a href="#" class="text-blue-600 font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all mt-auto">
+                            Baca selengkapnya <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col sm:flex-row h-full">
+                    <div class="sm:w-1/3 h-48 sm:h-auto relative overflow-hidden">
+                        <img src="berita3.png"
+                             alt="Berita 2"
+                             class="absolute inset-0 w-full h-full object-cover transform transition duration-500 group-hover:scale-105">
+                    </div>
+                    <div class="p-5 sm:w-2/3 flex flex-col justify-center">
+                        <span class="text-gray-400 text-xs font-semibold mb-2 block">04 Desember 2025</span>
+                        <h3 class="text-base font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition leading-snug">
+                            BMKG Perkuat Koordinasi Layanan Meteorologi Jelang Nataru 2025/2026
+                        </h3>
+                        <a href="#" class="text-blue-600 font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all mt-auto">
+                            Baca selengkapnya <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="text-center mt-12">
+            <button class="bg-blue-700 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-800 transition shadow-lg shadow-blue-200 text-sm">
+                Lihat Berita Utama Lainnya
+            </button>
+        </div>
+
+    </section>
+    <section class="mt-16 mb-24">
+
+        <div class="flex justify-between items-end mb-8">
+            <h2 class="text-3xl font-bold text-gray-900">Siaran Pers</h2>
+            <a href="#" class="text-blue-600 font-semibold hover:underline flex items-center gap-1 text-sm md:text-base">
+                Lihat Semuanya <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col h-full">
+                <div class="h-52 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1592210454359-9043f067919b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Siaran Pers 1"
+                         class="w-full h-full object-cover transform transition duration-500 group-hover:scale-105">
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <span class="text-gray-400 text-xs font-bold mb-3 block">04 Desember 2025</span>
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 group-hover:text-blue-600 transition leading-snug">
+                        Hujan Masih Mendominasi Sepekan ke Depan, BMKG Imbau Masyarakat Waspada namun Tetap Tenang
+                    </h3>
+                    <a href="#" class="mt-auto text-blue-600 font-bold text-sm flex items-center gap-2 hover:gap-3 transition-all">
+                        Baca selengkapnya <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col h-full">
+                <div class="h-52 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Siaran Pers 2"
+                         class="w-full h-full object-cover transform transition duration-500 group-hover:scale-105">
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <span class="text-gray-400 text-xs font-bold mb-3 block">30 November 2025</span>
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 group-hover:text-blue-600 transition leading-snug">
+                        Wujud Aksi Nyata Pemerintah, BMKG Dukung Penanganan Pasca Bencana di Wilayah Sumatra
+                    </h3>
+                    <a href="#" class="mt-auto text-blue-600 font-bold text-sm flex items-center gap-2 hover:gap-3 transition-all">
+                        Baca selengkapnya <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col h-full">
+                <div class="h-52 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Siaran Pers 3"
+                         class="w-full h-full object-cover transform transition duration-500 group-hover:scale-105">
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <span class="text-gray-400 text-xs font-bold mb-3 block">29 November 2025</span>
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 group-hover:text-blue-600 transition leading-snug">
+                        Wujudkan Instruksi Presiden, BMKG Dukung Penanganan Pascabencana Sumatra melalui Peringatan Dini dan OMC
+                    </h3>
+                    <a href="#" class="mt-auto text-blue-600 font-bold text-sm flex items-center gap-2 hover:gap-3 transition-all">
+                        Baca selengkapnya <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+    <section class="mt-16 mb-32">
+        
+        <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+            <h2 class="text-3xl font-bold text-gray-900">Pengumuman dan Artikel</h2>
+            
+            <div class="flex items-center gap-6">
+                <div class="flex bg-white border border-blue-100 rounded-lg p-1 shadow-sm">
+                    <button class="px-6 py-2 bg-blue-50 text-blue-700 rounded-md text-sm font-bold shadow-sm ring-1 ring-blue-100">
+                        Pengumuman
+                    </button>
+                    <button class="px-6 py-2 text-gray-500 rounded-md text-sm font-medium hover:text-gray-700 hover:bg-gray-50 transition">
+                        Artikel
+                    </button>
+                </div>
+                
+                <a href="#" class="text-blue-600 font-semibold hover:underline flex items-center gap-1 text-sm">
+                    Lihat Semuanya <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <div class="bg-white rounded-2xl border border-gray-200 p-8 hover:shadow-lg hover:border-blue-200 transition-all duration-300 group cursor-pointer h-full flex flex-col">
+                <div class="flex justify-between items-center mb-6 text-xs font-bold tracking-widest">
+                    <span class="text-gray-400 uppercase">PENGUMUMAN</span>
+                    <span class="text-gray-400">04 DES 2025</span>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800 leading-snug group-hover:text-blue-600 transition">
+                    Penempatan Tugas Lulusan Kedinasan STMKG 2025
+                </h3>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-gray-200 p-8 hover:shadow-lg hover:border-blue-200 transition-all duration-300 group cursor-pointer h-full flex flex-col">
+                <div class="flex justify-between items-center mb-6 text-xs font-bold tracking-widest">
+                    <span class="text-gray-400 uppercase">PENGUMUMAN</span>
+                    <span class="text-gray-400">26 NOV 2025</span>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800 leading-snug group-hover:text-blue-600 transition">
+                    Pengumuman Program Pendidikan Penyiapan dan Pemantapan Pimpinan Nasional (P4N) LXIX dan LXX TA. 2026 Lemhannas RI
+                </h3>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-gray-200 p-8 hover:shadow-lg hover:border-blue-200 transition-all duration-300 group cursor-pointer h-full flex flex-col">
+                <div class="flex justify-between items-center mb-6 text-xs font-bold tracking-widest">
+                    <span class="text-gray-400 uppercase">PENGUMUMAN</span>
+                    <span class="text-gray-400">07 NOV 2025</span>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800 leading-snug group-hover:text-blue-600 transition">
+                    Hasil Verifikasi dan Validasi Seleksi Tugas Belajar Sekolah Tinggi Meteorologi, Klimatologi, dan Geofisika (STMKG) Tahun 2025
+                </h3>
+            </div>
+
+        </div>
+
+    </section>
+
+    </main> <footer class="bg-[#0b1320] text-gray-300 pt-16 pb-8 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-12 mb-16">
+                
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center p-1">
+                            <img src="bmkg.png" alt="Logo BMKG" class="w-full">
+                        </div>
+                        <span class="font-bold text-white text-lg tracking-wide">BMKG</span>
+                    </div>
+
+                    <div class="space-y-1">
+                        <h5 class="text-white font-bold uppercase text-xs mb-3 tracking-wider">KONTAK KAMI</h5>
+                        
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-map-marker-alt mt-1 w-4 text-center"></i>
+                            <p class="leading-relaxed">Jl. Angkasa I No.2 Kemayoran, Jakarta Pusat 10610, PO Box 3540 Jkt.</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-phone-alt w-4 text-center"></i>
+                            <p>Contact Center (021) 196</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-fax w-4 text-center"></i>
+                            <p>Faks (021) 4246703</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-envelope w-4 text-center"></i>
+                            <p>cc196[at]bmkg.go.id</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="text-gray-400 font-bold uppercase text-xs mb-6 tracking-wider">DUKUNGAN</h5>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-white transition flex items-center gap-1">Informasi Cuaca <i class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"></i></a></li>
+                        <li><a href="#" class="hover:text-white transition">Cuaca Maritim <i class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"></i></a></li>
+                        <li><a href="#" class="hover:text-white transition">Cuaca Penerbangan <i class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"></i></a></li>
+                        <li><a href="#" class="hover:text-white transition">CEWS (Climate Early Warning System) <i class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"></i></a></li>
+                        <li><a href="#" class="hover:text-white transition">InaTEWS (Indonesia Tsunami Early Warning System) <i class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"></i></a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="text-gray-400 font-bold uppercase text-xs mb-6 tracking-wider">TAUTAN</h5>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-white transition">Pusat Pengembangan SDM <i class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"></i></a></li>
+                        <li><a href="#" class="hover:text-white transition">STMKG <i class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"></i></a></li>
+                        <li><a href="#" class="hover:text-white transition">Dokumentasi Hukum (JDIH) <i class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"></i></a></li>
+                        <li><a href="#" class="hover:text-white transition">Data Online BMKG <i class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"></i></a></li>
+                        <li><a href="#" class="hover:text-white transition">Perpustakaan BMKG <i class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"></i></a></li>
+                        <li><a href="#" class="hover:text-white transition">Portal SSO BMKG <i class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"></i></a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="text-gray-400 font-bold uppercase text-xs mb-6 tracking-wider">APLIKASI INFO BMKG</h5>
+                    <div class="flex gap-2 mb-8">
+                        <a href="#" class="bg-white text-black px-3 py-1.5 rounded-lg flex items-center gap-2 hover:bg-gray-100 transition">
+                            <i class="fab fa-google-play text-xl"></i>
+                            <div class="flex flex-col leading-none">
+                                <span class="text-[8px] font-bold">GET IT ON</span>
+                                <span class="text-xs font-bold">Google Play</span>
+                            </div>
+                        </a>
+                        <a href="#" class="bg-white text-black px-3 py-1.5 rounded-lg flex items-center gap-2 hover:bg-gray-100 transition">
+                            <i class="fab fa-apple text-xl"></i>
+                            <div class="flex flex-col leading-none">
+                                <span class="text-[8px] font-bold">Download on the</span>
+                                <span class="text-xs font-bold">App Store</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <h5 class="text-gray-400 font-bold uppercase text-xs mb-4 tracking-wider">MEDIA SOSIAL</h5>
+                    <div class="flex gap-3 mb-8">
+                        <a href="#" class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-blue-600 transition text-white"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-blue-500 transition text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-sky-400 transition text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-pink-600 transition text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-black transition text-white border border-gray-600"><i class="fab fa-tiktok"></i></a>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <div class="bg-blue-900/50 border border-blue-700 p-2 rounded text-[10px] text-center w-12 h-12 flex items-center justify-center font-bold text-blue-200">
+                            TUV<br>NORD
+                        </div>
+                        <div class="bg-blue-900/50 border border-blue-700 p-2 rounded text-[10px] text-center w-12 h-12 flex items-center justify-center font-bold text-blue-200">
+                            ISO<br>9001
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
+                <p>&copy; 2025 - Badan Meteorologi, Klimatologi, dan Geofisika</p>
+                
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="mt-4 md:mt-0 bg-white text-gray-800 px-4 py-2 rounded-full font-bold shadow hover:bg-gray-100 transition flex items-center gap-2">
+                    <i class="fas fa-arrow-up"></i> Kembali ke atas
+                </button>
+            </div>
+
+        </div>
+    </footer>
+
+    <script>
+        // --- SCRIPT JAM LIVE & TANGGAL (UPDATE) ---
+        function updateHeaderTime() {
+            const days = ["MINGGU", "SENIN", "SELASA", "RABU", "KAMIS", "JUMAT", "SABTU"];
+            const months = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
+
+            const now = new Date();
+
+            // 1. UPDATE TANGGAL (KIRI)
+            const dayName = days[now.getDay()];
+            const dayNum = now.getDate();
+            const monthName = months[now.getMonth()];
+            const year = now.getFullYear();
+
+            // Masukkan ke elemen HTML
+            const dateString = `${dayName}, ${dayNum} ${monthName} ${year}`;
+            document.getElementById('header-date').textContent = dateString;
+
+            // 2. UPDATE JAM (KANAN)
+            // Ambil waktu UTC
+            const utcHours = now.getUTCHours();
+            const utcMinutes = now.getUTCMinutes();
+            const utcSeconds = now.getUTCSeconds();
+
+            // Hitung WIB (UTC + 7)
+            let wibHours = utcHours + 7;
+            if (wibHours >= 24) wibHours -= 24; // Reset jika lewat tengah malam
+
+            // Fungsi biar angka selalu 2 digit (misal: 9 jadi 09)
+            const pad = (n) => n.toString().padStart(2, '0');
+
+            // Format Teks Jam (spasi di antara titik dua agar mirip gambar)
+            const wibString = `${pad(wibHours)} : ${pad(utcMinutes)} : ${pad(utcSeconds)}`;
+            const utcString = `${pad(utcHours)} : ${pad(utcMinutes)} : ${pad(utcSeconds)} UTC`;
+
+            // Masukkan ke elemen HTML
+            document.getElementById('time-wib').textContent = wibString;
+            document.getElementById('time-utc').textContent = utcString;
+        }
+
+        // Jalankan setiap 1 detik
+        setInterval(updateHeaderTime, 1000);
+
+        // Panggil langsung biar gak nunggu 1 detik pas load
+        updateHeaderTime();
+
+        const weatherContainer = document.getElementById('weather-scroll');
+        const btnPrev = document.getElementById('btn-prev-weather');
+        const btnNext = document.getElementById('btn-next-weather');
+
+        // Fungsi saat tombol Next ditekan
+        btnNext.addEventListener('click', () => {
+            // Geser ke kanan sejauh 1200px (lebar 5 kartu + gap)
+            weatherContainer.scrollBy({ left: 1200, behavior: 'smooth' });
+        });
+
+        // Fungsi saat tombol Prev ditekan
+        btnPrev.addEventListener('click', () => {
+            // Geser ke kiri
+            weatherContainer.scrollBy({ left: -1200, behavior: 'smooth' });
+        });
+
+        // Logika JavaScript untuk Slider Peringatan Dini
+        const track = document.getElementById('warning-track');
+        const btnNextWarn = document.getElementById('btn-next-warning');
+        const btnPrevWarn = document.getElementById('btn-prev-warning');
+        const btnNextWarnMob = document.getElementById('btn-next-warning-mob');
+        const btnPrevWarnMob = document.getElementById('btn-prev-warning-mob');
+
+        let currentIndex = 0;
+        const items = track.children;
+        const totalItems = items.length;
+
+        function updateSlider() {
+            // Geser track sesuai index (persentase lebar 100%)
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        function nextSlide() {
+            if (currentIndex < totalItems - 1) {
+                currentIndex++;
+            } else {
+                currentIndex = 0; // Loop balik ke awal
+            }
+            updateSlider();
+        }
+
+        function prevSlide() {
+            if (currentIndex > 0) {
+                currentIndex--;
+            } else {
+                currentIndex = totalItems - 1; // Loop ke akhir
+            }
+            updateSlider();
+        }
+
+        // Event Listeners Desktop
+        btnNextWarn.addEventListener('click', nextSlide);
+        btnPrevWarn.addEventListener('click', prevSlide);
+
+        // Event Listeners Mobile
+        btnNextWarnMob.addEventListener('click', nextSlide);
+        btnPrevWarnMob.addEventListener('click', prevSlide);
+
+        // Opsional: Auto slide setiap 5 detik
+        setInterval(nextSlide, 5000);
+
+        // Hamburger menu toggle
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const navMenu = document.getElementById('nav-menu');
+        hamburgerBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
 </html>
