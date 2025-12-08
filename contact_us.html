@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us - Student Registration</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+
+      .error-msg {
+        color: #ef4444; 
+        font-size: 0.75rem; 
+        margin-top: 0.25rem;
+        display: none; 
+      }
+
+      .input-error {
+        border-color: #ef4444 !important;
+        background-color: #fef2f2;
+      }
+
+      .top-bar {
+        background-color: #f8f9fa;
+        padding: 5px 20px;
+        font-size: 0.8rem;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #ddd;
+        color: #666;
+      }
+
+      header {
+        padding: 15px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        position: fixed;
+        top: 40px;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        background: white;
+      }
+
+      .logo-section {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo-img {
+        width: 50px; 
+        height: 50px;
+        background-color: #ddd; 
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        text-align: center;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+        gap: 20px;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: #555;
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+    <div
+      class="bg-slate-100 text-xs md:text-sm border-b border-gray-200 py-2 px-4 md:px-8 flex flex-col md:flex-row justify-between items-center font-medium font-sans"
+      style="position: fixed; top: 0; left: 0; right: 0; z-index: 20"
+    >
+      <div
+        id="header-date"
+        class="text-slate-500 uppercase tracking-wide mb-1 md:mb-0 font-bold"
+      >
+        MINGGU, 7 DESEMBER 2025
+      </div>
+
+      <div class="flex items-center gap-2 text-slate-600">
+        <span class="hidden md:inline font-bold text-slate-500"
+          >STANDAR WAKTU INDONESIA</span
+        >
+
+        <div class="flex items-center gap-1 font-bold">
+          <span id="time-wib" class="text-green-600 text-base"
+            >-- : -- : --</span
+          >
+
+          <span class="text-slate-400 mx-1">/</span>
+
+          <span id="time-utc" class="text-green-600 text-base"
+            >-- : -- : -- UTC</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <header>
+      <div class="logo-section">
+        <div class="logo-img">
+          <img
+            src="bmkg.png"
+            alt="BMKG Logo"
+            class="w-full h-full rounded-full object-cover"
+          />
+        </div>
+        <div>
+          <h3 style="font-size: 0.9rem">BADAN METEOROLOGI,</h3>
+          <h3 style="font-size: 0.9rem">KLIMATOLOGI, DAN GEOFISIKA</h3>
+        </div>
+      </div>
+
+      <nav>
+        <ul>
+          <li>
+            <a
+              href="index.html"
+              class="text-gray-600 hover:text-blue-600 transition-colors duration-300"
+              >Home</a
+            >
+          </li>
+          <li>
+            <a
+              href="biodata.html"
+              class="text-gray-600 hover:text-blue-600 transition-colors duration-300"
+              >Biodata</a
+            >
+          </li>
+          <li>
+            <a
+              href="contact_us.html"
+              class="text-gray-600 hover:text-blue-600 transition-colors duration-300"
+              >Contact Us</a
+            >
+          </li>
+          <li>
+            <a
+              href="posts.html"
+              class="text-gray-600 hover:text-blue-600 transition-colors duration-300"
+              >Posts</a
+            >
+          </li>
+          <li>
+            <a
+              href="freepage.html"
+              class="text-gray-600 hover:text-blue-600 transition-colors duration-300"
+              >Mini Portofolio</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://fti.unai.edu/"
+              class="text-gray-600 hover:text-blue-600 transition-colors duration-300"
+              >FTI UNAI</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://unai.edu/"
+              class="text-gray-600 hover:text-blue-600 transition-colors duration-300"
+              >UNAI</a
+            >
+          </li>
+        </ul>
+      </nav>
+
+      <button
+        class="border border-gray-300 px-4 py-2 rounded-full bg-white hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all duration-300 flex items-center gap-2 cursor-pointer"
+      >
+        <i class="fas fa-phone-alt"></i> Contact Center 196
+      </button>
+    </header>
+
+    <main style="max-width: 1200px; margin: 0 auto; padding: 160px 20px 40px">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-gray-800">Student Registration</h2>
+        <p class="text-gray-500 mt-2">
+          Silakan isi formulir di bawah ini dengan data yang benar.
+        </p>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+        <div
+          id="success-alert"
+          class="hidden bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6"
+          role="alert"
+        >
+          <p class="font-bold">Berhasil!</p>
+          <p>Data registrasi mahasiswa telah berhasil dikirim.</p>
+        </div>
+
+        <form id="regForm" novalidate>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="col-span-1">
+              <label
+                for="fullname"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Full Name</label
+              >
+              <input
+                type="text"
+                id="fullname"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                placeholder="Contoh: John Doe"
+              />
+              <p class="error-msg" id="err-fullname">
+                Nama lengkap harus diisi.
+              </p>
+            </div>
+
+            <div class="col-span-1">
+              <label
+                for="nim"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Student ID (NIM)</label
+              >
+              <input
+                type="text"
+                id="nim"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                placeholder="Contoh: 21810xx"
+              />
+              <p class="error-msg" id="err-nim">NIM harus diisi.</p>
+            </div>
+
+            <div class="col-span-1">
+              <label
+                for="email"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Email Address</label
+              >
+              <input
+                type="email"
+                id="email"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                placeholder="student@unai.edu"
+              />
+              <p class="error-msg" id="err-email">Email tidak valid.</p>
+            </div>
+
+            <div class="col-span-1">
+              <label
+                for="phone"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Phone Number</label
+              >
+              <input
+                type="text"
+                id="phone"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                placeholder="0812xxxx (Hanya angka)"
+              />
+              <p class="error-msg" id="err-phone">
+                Nomor HP harus angka & minimal 10 digit.
+              </p>
+            </div>
+
+            <div class="col-span-1">
+              <label
+                for="faculty"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Faculty / Major</label
+              >
+              <select
+                id="faculty"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white"
+              >
+                <option value="">-- Pilih Fakultas --</option>
+                <option value="FTI">Fakultas Teknologi Informasi</option>
+                <option value="FE">Fakultas Ekonomi</option>
+                <option value="FKEP">Fakultas Keperawatan</option>
+                <option value="FIP">Fakultas Ilmu Pendidikan</option>
+                <option value="FMIPA">Fakultas MIPA</option>
+                <option value="Filsafat">Fakultas Filsafat</option>
+              </select>
+              <p class="error-msg" id="err-faculty">Silakan pilih fakultas.</p>
+            </div>
+
+            <div class="col-span-1">
+              <label
+                for="dob"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Date of Birth</label
+              >
+              <input
+                type="date"
+                id="dob"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              />
+              <p class="error-msg" id="err-dob">Tanggal lahir harus diisi.</p>
+            </div>
+
+            <div class="col-span-1 md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Gender</label
+              >
+              <div class="flex items-center space-x-6">
+                <label class="inline-flex items-center cursor-pointer">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="Male"
+                    class="form-radio text-blue-600 w-4 h-4 focus:ring-blue-500"
+                  />
+                  <span class="ml-2 text-gray-700">Male</span>
+                </label>
+                <label class="inline-flex items-center cursor-pointer">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="Female"
+                    class="form-radio text-blue-600 w-4 h-4 focus:ring-blue-500"
+                  />
+                  <span class="ml-2 text-gray-700">Female</span>
+                </label>
+              </div>
+              <p class="error-msg" id="err-gender">
+                Silakan pilih jenis kelamin.
+              </p>
+            </div>
+
+            <div class="col-span-1 md:col-span-2">
+              <label
+                for="address"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Address</label
+              >
+              <textarea
+                id="address"
+                rows="3"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                placeholder="Alamat lengkap..."
+              ></textarea>
+              <p class="error-msg" id="err-address">Alamat harus diisi.</p>
+            </div>
+          </div>
+
+          <div class="mt-8 text-right">
+            <button
+              type="submit"
+              class="w-full md:w-auto bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition duration-300 shadow-md flex items-center justify-center gap-2"
+            >
+              <i class="fas fa-paper-plane"></i> Submit Registration
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <footer class="bg-[#0b1320] text-gray-300 pt-16 pb-8 text-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-12 mb-16">
+          <div class="space-y-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-12 h-12 bg-white rounded-full flex items-center justify-center p-1"
+              >
+                <img src="bmkg.png" alt="Logo BMKG" class="w-full" />
+              </div>
+              <span class="font-bold text-white text-lg tracking-wide"
+                >BMKG</span
+              >
+            </div>
+
+            <div class="space-y-1">
+              <h5
+                class="text-white font-bold uppercase text-xs mb-3 tracking-wider"
+              >
+                KONTAK KAMI
+              </h5>
+
+              <div class="flex items-start gap-3">
+                <i class="fas fa-map-marker-alt mt-1 w-4 text-center"></i>
+                <p class="leading-relaxed">
+                  Jl. Angkasa I No.2 Kemayoran, Jakarta Pusat 10610, PO Box 3540
+                  Jkt.
+                </p>
+              </div>
+              <div class="flex items-center gap-3">
+                <i class="fas fa-phone-alt w-4 text-center"></i>
+                <p>Contact Center (021) 196</p>
+              </div>
+              <div class="flex items-center gap-3">
+                <i class="fas fa-fax w-4 text-center"></i>
+                <p>Faks (021) 4246703</p>
+              </div>
+              <div class="flex items-center gap-3">
+                <i class="fas fa-envelope w-4 text-center"></i>
+                <p>cc196[at]bmkg.go.id</p>
+              </div>
+              <script>
+
+                function updateHeaderTime() {
+                  const days = [
+                    'MINGGU',
+                    'SENIN',
+                    'SELASA',
+                    'RABU',
+                    'KAMIS',
+                    'JUMAT',
+                    'SABTU',
+                  ];
+                  const months = [
+                    'JANUARI',
+                    'FEBRUARI',
+                    'MARET',
+                    'APRIL',
+                    'MEI',
+                    'JUNI',
+                    'JULI',
+                    'AGUSTUS',
+                    'SEPTEMBER',
+                    'OKTOBER',
+                    'NOVEMBER',
+                    'DESEMBER',
+                  ];
+
+                  const now = new Date();
+
+                  const dayName = days[now.getDay()];
+                  const dayNum = now.getDate();
+                  const monthName = months[now.getMonth()];
+                  const year = now.getFullYear();
+
+                  const dateString = `${dayName}, ${dayNum} ${monthName} ${year}`;
+                  document.getElementById('header-date').textContent =
+                    dateString;
+
+                  const utcHours = now.getUTCHours();
+                  const utcMinutes = now.getUTCMinutes();
+                  const utcSeconds = now.getUTCSeconds();
+
+                  let wibHours = utcHours + 7;
+                  if (wibHours >= 24) wibHours -= 24; 
+
+                  const pad = (n) => n.toString().padStart(2, '0');
+
+                  const wibString = `${pad(wibHours)} : ${pad(
+                    utcMinutes
+                  )} : ${pad(utcSeconds)}`;
+                  const utcString = `${pad(utcHours)} : ${pad(
+                    utcMinutes
+                  )} : ${pad(utcSeconds)} UTC`;
+
+                  document.getElementById('time-wib').textContent = wibString;
+                  document.getElementById('time-utc').textContent = utcString;
+                }
+
+                setInterval(updateHeaderTime, 1000);
+
+                updateHeaderTime();
+              </script>
+            </div>
+          </div>
+
+          <div>
+            <h5
+              class="text-gray-400 font-bold uppercase text-xs mb-6 tracking-wider"
+            >
+              DUKUNGAN
+            </h5>
+            <ul class="space-y-3">
+              <li>
+                <a
+                  href="#"
+                  class="hover:text-white transition flex items-center gap-1"
+                  >Informasi Cuaca
+                  <i
+                    class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"
+                  ></i
+                ></a>
+              </li>
+              <li>
+                <a href="#" class="hover:text-white transition"
+                  >Cuaca Maritim
+                  <i
+                    class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"
+                  ></i
+                ></a>
+              </li>
+              <li>
+                <a href="#" class="hover:text-white transition"
+                  >Cuaca Penerbangan
+                  <i
+                    class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"
+                  ></i
+                ></a>
+              </li>
+              <li>
+                <a href="#" class="hover:text-white transition"
+                  >CEWS (Climate Early Warning System)
+                  <i
+                    class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"
+                  ></i
+                ></a>
+              </li>
+              <li>
+                <a href="#" class="hover:text-white transition"
+                  >InaTEWS (Indonesia Tsunami Early Warning System)
+                  <i
+                    class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"
+                  ></i
+                ></a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h5
+              class="text-gray-400 font-bold uppercase text-xs mb-6 tracking-wider"
+            >
+              TAUTAN
+            </h5>
+            <ul class="space-y-3">
+              <li>
+                <a href="#" class="hover:text-white transition"
+                  >Pusat Pengembangan SDM
+                  <i
+                    class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"
+                  ></i
+                ></a>
+              </li>
+              <li>
+                <a href="#" class="hover:text-white transition"
+                  >STMKG
+                  <i
+                    class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"
+                  ></i
+                ></a>
+              </li>
+              <li>
+                <a href="#" class="hover:text-white transition"
+                  >Dokumentasi Hukum (JDIH)
+                  <i
+                    class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"
+                  ></i
+                ></a>
+              </li>
+              <li>
+                <a href="#" class="hover:text-white transition"
+                  >Data Online BMKG
+                  <i
+                    class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"
+                  ></i
+                ></a>
+              </li>
+              <li>
+                <a href="#" class="hover:text-white transition"
+                  >Perpustakaan BMKG
+                  <i
+                    class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"
+                  ></i
+                ></a>
+              </li>
+              <li>
+                <a href="#" class="hover:text-white transition"
+                  >Portal SSO BMKG
+                  <i
+                    class="fas fa-arrow-right text-[10px] opacity-0 hover:opacity-100 transition"
+                  ></i
+                ></a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h5
+              class="text-gray-400 font-bold uppercase text-xs mb-6 tracking-wider"
+            >
+              APLIKASI INFO BMKG
+            </h5>
+            <div class="flex gap-2 mb-8">
+              <a
+                href="#"
+                class="bg-white text-black px-3 py-1.5 rounded-lg flex items-center gap-2 hover:bg-gray-100 transition"
+              >
+                <i class="fab fa-google-play text-xl"></i>
+                <div class="flex flex-col leading-none">
+                  <span class="text-[8px] font-bold">GET IT ON</span>
+                  <span class="text-xs font-bold">Google Play</span>
+                </div>
+              </a>
+              <a
+                href="#"
+                class="bg-white text-black px-3 py-1.5 rounded-lg flex items-center gap-2 hover:bg-gray-100 transition"
+              >
+                <i class="fab fa-apple text-xl"></i>
+                <div class="flex flex-col leading-none">
+                  <span class="text-[8px] font-bold">Download on the</span>
+                  <span class="text-xs font-bold">App Store</span>
+                </div>
+              </a>
+            </div>
+
+            <h5
+              class="text-gray-400 font-bold uppercase text-xs mb-4 tracking-wider"
+            >
+              MEDIA SOSIAL
+            </h5>
+            <div class="flex gap-3 mb-8">
+              <a
+                href="#"
+                class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-blue-600 transition text-white"
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a
+                href="#"
+                class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-blue-500 transition text-white"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a
+                href="#"
+                class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-sky-400 transition text-white"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a
+                href="#"
+                class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-pink-600 transition text-white"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a
+                href="#"
+                class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-black transition text-white border border-gray-600"
+                ><i class="fab fa-tiktok"></i
+              ></a>
+            </div>
+
+            <div class="flex gap-2">
+              <div
+                class="bg-blue-900/50 border border-blue-700 p-2 rounded text-[10px] text-center w-12 h-12 flex items-center justify-center font-bold text-blue-200"
+              >
+                TUV<br />NORD
+              </div>
+              <div
+                class="bg-blue-900/50 border border-blue-700 p-2 rounded text-[10px] text-center w-12 h-12 flex items-center justify-center font-bold text-blue-200"
+              >
+                ISO<br />9001
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500"
+        >
+          <p>&copy; 2025 - Badan Meteorologi, Klimatologi, dan Geofisika</p>
+
+          <button
+            onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+            class="mt-4 md:mt-0 bg-white text-gray-800 px-4 py-2 rounded-full font-bold shadow hover:bg-gray-100 transition flex items-center gap-2"
+          >
+            <i class="fas fa-arrow-up"></i> Kembali ke atas
+          </button>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      document
+        .getElementById('regForm')
+        .addEventListener('submit', function (e) {
+          e.preventDefault(); 
+
+          const fullname = document.getElementById('fullname');
+          const nim = document.getElementById('nim');
+          const email = document.getElementById('email');
+          const phone = document.getElementById('phone');
+          const faculty = document.getElementById('faculty');
+          const dob = document.getElementById('dob');
+          const address = document.getElementById('address');
+
+          const genderMale = document.querySelector(
+            'input[name="gender"][value="Male"]'
+          );
+          const genderFemale = document.querySelector(
+            'input[name="gender"][value="Female"]'
+          );
+
+          let isValid = true;
+
+          function showError(inputElement, errorId, message) {
+            const errText = document.getElementById(errorId);
+
+            if (inputElement) inputElement.classList.add('input-error');
+
+            errText.style.display = 'block';
+            if (message) errText.textContent = message;
+          }
+
+          function resetError(inputElement, errorId) {
+            const errText = document.getElementById(errorId);
+            if (inputElement) inputElement.classList.remove('input-error');
+            errText.style.display = 'none';
+          }
+
+          if (fullname.value.trim() === '') {
+            showError(fullname, 'err-fullname');
+            isValid = false;
+          } else {
+            resetError(fullname, 'err-fullname');
+          }
+
+          if (nim.value.trim() === '') {
+            showError(nim, 'err-nim');
+            isValid = false;
+          } else {
+            resetError(nim, 'err-nim');
+          }
+
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (email.value.trim() === '') {
+            showError(email, 'err-email', 'Email harus diisi.');
+            isValid = false;
+          } else if (!emailPattern.test(email.value)) {
+            showError(
+              email,
+              'err-email',
+              'Format email tidak valid (harus mengandung @ dan .)'
+            );
+            isValid = false;
+          } else {
+            resetError(email, 'err-email');
+          }
+
+          const phoneVal = phone.value.trim();
+          const phonePattern = /^[0-9]+$/; 
+
+          if (phoneVal === '') {
+            showError(phone, 'err-phone', 'Nomor HP harus diisi.');
+            isValid = false;
+          } else if (!phonePattern.test(phoneVal)) {
+            showError(phone, 'err-phone', 'Nomor HP hanya boleh berisi angka.');
+            isValid = false;
+          } else if (phoneVal.length < 10) {
+            showError(phone, 'err-phone', 'Nomor HP minimal 10 digit.');
+            isValid = false;
+          } else {
+            resetError(phone, 'err-phone');
+          }
+
+          if (faculty.value === '') {
+            showError(faculty, 'err-faculty');
+            isValid = false;
+          } else {
+            resetError(faculty, 'err-faculty');
+          }
+
+          if (dob.value === '') {
+            showError(dob, 'err-dob');
+            isValid = false;
+          } else {
+            resetError(dob, 'err-dob');
+          }
+
+          if (!genderMale.checked && !genderFemale.checked) {
+            showError(null, 'err-gender'); 
+            isValid = false;
+          } else {
+            resetError(null, 'err-gender');
+          }
+
+          if (address.value.trim() === '') {
+            showError(address, 'err-address');
+            isValid = false;
+          } else {
+            resetError(address, 'err-address');
+          }
+
+          if (isValid) {
+
+            const successAlert = document.getElementById('success-alert');
+            successAlert.classList.remove('hidden');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            document.getElementById('regForm').reset();
+
+            setTimeout(() => {
+              successAlert.classList.add('hidden');
+            }, 5000);
+          } else {
+            document.getElementById('success-alert').classList.add('hidden');
+          }
+        });
+
+      const inputs = document.querySelectorAll('input, select, textarea');
+      inputs.forEach((input) => {
+        input.addEventListener('input', function () {
+          if (this.id) {
+            const errId = 'err-' + this.id;
+            const errEl = document.getElementById(errId);
+            if (errEl) {
+              this.classList.remove('input-error');
+              errEl.style.display = 'none';
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
