@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BMKG - Cuaca Saat Ini</title>
+    <title>BMKG - Badan Meteorologi, Klimatologi, dan Geofisika</title>
     <script src="https://cdn.tailwindcss.com"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- RESET DASAR --- */
         * {
             margin: 0;
             padding: 0;
@@ -152,7 +151,6 @@
             font-weight: 600;
         }
 
-        /* --- PERINGATAN DINI (KOTAK ORANGE) --- */
         .warning-box {
             background-color: #fff8e1;
             border: 1px solid #ffe0b2;
@@ -190,7 +188,6 @@
             cursor: pointer;
         }
 
-        /* --- KARTU CUACA (WEATHER CARDS) --- */
         .weather-container {
             display: flex;
             gap: 20px;
@@ -233,8 +230,7 @@
             font-size: 3rem;
             margin-bottom: 10px;
         }
-        
-        /* Warna icon dinamis */
+
         .icon-rain { color: #7f8c8d; }
         .icon-cloud { color: #95a5a6; }
         .icon-sun { color: #f1c40f; }
@@ -265,7 +261,6 @@
             text-decoration: none;
         }
 
-        /* --- NAVIGASI SLIDER --- */
         .slider-nav {
             position: absolute;
             top: 50%;
@@ -284,7 +279,6 @@
         .nav-left { left: 10px; }
         .nav-right { right: 10px; }
 
-        /* Media Queries untuk Mobile Optimization */
         @media (max-width: 768px) {
             .top-bar {
                 padding: 5px 5px;
@@ -326,7 +320,6 @@
             }
         }
 
-        /* Touch scroll indicator untuk mobile */
         @media (hover: none) and (pointer: coarse) {
             .weather-container::after,
             #weather-scroll::after {
@@ -1212,68 +1205,52 @@
     </footer>
 
     <script>
-        // --- SCRIPT JAM LIVE & TANGGAL (UPDATE) ---
         function updateHeaderTime() {
             const days = ["MINGGU", "SENIN", "SELASA", "RABU", "KAMIS", "JUMAT", "SABTU"];
             const months = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
 
             const now = new Date();
 
-            // 1. UPDATE TANGGAL (KIRI)
             const dayName = days[now.getDay()];
             const dayNum = now.getDate();
             const monthName = months[now.getMonth()];
             const year = now.getFullYear();
 
-            // Masukkan ke elemen HTML
             const dateString = `${dayName}, ${dayNum} ${monthName} ${year}`;
             document.getElementById('header-date').textContent = dateString;
 
-            // 2. UPDATE JAM (KANAN)
-            // Ambil waktu UTC
             const utcHours = now.getUTCHours();
             const utcMinutes = now.getUTCMinutes();
             const utcSeconds = now.getUTCSeconds();
 
-            // Hitung WIB (UTC + 7)
             let wibHours = utcHours + 7;
-            if (wibHours >= 24) wibHours -= 24; // Reset jika lewat tengah malam
-
+            if (wibHours >= 24) wibHours -= 24;
             // Fungsi biar angka selalu 2 digit (misal: 9 jadi 09)
             const pad = (n) => n.toString().padStart(2, '0');
-
-            // Format Teks Jam (spasi di antara titik dua agar mirip gambar)
+            
             const wibString = `${pad(wibHours)} : ${pad(utcMinutes)} : ${pad(utcSeconds)}`;
             const utcString = `${pad(utcHours)} : ${pad(utcMinutes)} : ${pad(utcSeconds)} UTC`;
 
-            // Masukkan ke elemen HTML
             document.getElementById('time-wib').textContent = wibString;
             document.getElementById('time-utc').textContent = utcString;
         }
 
-        // Jalankan setiap 1 detik
         setInterval(updateHeaderTime, 1000);
 
-        // Panggil langsung biar gak nunggu 1 detik pas load
         updateHeaderTime();
 
         const weatherContainer = document.getElementById('weather-scroll');
         const btnPrev = document.getElementById('btn-prev-weather');
         const btnNext = document.getElementById('btn-next-weather');
 
-        // Fungsi saat tombol Next ditekan
         btnNext.addEventListener('click', () => {
-            // Geser ke kanan sejauh 1200px (lebar 5 kartu + gap)
             weatherContainer.scrollBy({ left: 1200, behavior: 'smooth' });
         });
 
-        // Fungsi saat tombol Prev ditekan
         btnPrev.addEventListener('click', () => {
-            // Geser ke kiri
             weatherContainer.scrollBy({ left: -1200, behavior: 'smooth' });
         });
 
-        // Logika JavaScript untuk Slider Peringatan Dini
         const track = document.getElementById('warning-track');
         const btnNextWarn = document.getElementById('btn-next-warning');
         const btnPrevWarn = document.getElementById('btn-prev-warning');
@@ -1285,7 +1262,6 @@
         const totalItems = items.length;
 
         function updateSlider() {
-            // Geser track sesuai index (persentase lebar 100%)
             track.style.transform = `translateX(-${currentIndex * 100}%)`;
         }
 
@@ -1313,7 +1289,6 @@
         btnNextWarnMob.addEventListener('click', nextSlide);
         btnPrevWarnMob.addEventListener('click', prevSlide);
 
-        // Opsional: Auto slide setiap 5 detik
         setInterval(nextSlide, 5000);
 
         const hamburgerBtn = document.getElementById('hamburger-btn');
@@ -1325,3 +1300,4 @@
 </body>
 
 </html>
+
