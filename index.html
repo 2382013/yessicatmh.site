@@ -60,9 +60,9 @@
         }
 
         .logo-img {
-            width: 50px; /* Placeholder ukuran logo */
+            width: 50px; 
             height: 50px;
-            background-color: #ddd; /* Ganti dengan src gambar asli jika ada */
+            background-color: #ddd;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -1307,18 +1307,15 @@
             updateSlider();
         }
 
-        // Event Listeners Desktop
         btnNextWarn.addEventListener('click', nextSlide);
         btnPrevWarn.addEventListener('click', prevSlide);
 
-        // Event Listeners Mobile
         btnNextWarnMob.addEventListener('click', nextSlide);
         btnPrevWarnMob.addEventListener('click', prevSlide);
 
         // Opsional: Auto slide setiap 5 detik
         setInterval(nextSlide, 5000);
 
-        // Hamburger menu toggle
         const hamburgerBtn = document.getElementById('hamburger-btn');
         const navMenu = document.getElementById('nav-menu');
         hamburgerBtn.addEventListener('click', () => {
@@ -1326,4 +1323,5 @@
         });
     </script>
 </body>
+
 </html>
