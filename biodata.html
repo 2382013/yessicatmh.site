@@ -17,7 +17,6 @@
       body {
         font-family: 'Inter', sans-serif;
       }
-      /* --- HEADER & TOP BAR --- */
       .top-bar {
         background-color: #f8f9fa;
         padding: 5px 20px;
@@ -42,7 +41,6 @@
         background: white;
       }
 
-      /* Media Queries untuk Mobile Optimization */
       @media (max-width: 768px) {
         .top-bar {
           padding: 5px 5px;
@@ -79,9 +77,9 @@
       }
 
       .logo-img {
-        width: 50px; /* Placeholder logo size */
+        width: 50px; 
         height: 50px;
-        background-color: #ddd; /* Replace with actual image src if available */
+        background-color:
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -621,7 +619,6 @@
     </footer>
 
     <script>
-      // --- LIVE TIME & DATE SCRIPT (UPDATE) ---
       function updateHeaderTime() {
         const days = [
           'SUNDAY',
@@ -649,30 +646,23 @@
 
         const now = new Date();
 
-        // 1. UPDATE DATE (LEFT)
         const dayName = days[now.getDay()];
         const dayNum = now.getDate();
         const monthName = months[now.getMonth()];
         const year = now.getFullYear();
 
-        // Insert into HTML element
         const dateString = `${dayName}, ${dayNum} ${monthName} ${year}`;
         document.getElementById('header-date').textContent = dateString;
 
-        // 2. UPDATE TIME (RIGHT)
-        // Get UTC time
         const utcHours = now.getUTCHours();
         const utcMinutes = now.getUTCMinutes();
         const utcSeconds = now.getUTCSeconds();
 
-        // Calculate WIB (UTC + 7)
         let wibHours = utcHours + 7;
-        if (wibHours >= 24) wibHours -= 24; // Reset if past midnight
+        if (wibHours >= 24) wibHours -= 24;
 
-        // Function to make numbers always 2 digits (e.g.: 9 becomes 09)
         const pad = (n) => n.toString().padStart(2, '0');
 
-        // Time Text Format (space between colons to resemble image)
         const wibString = `${pad(wibHours)} : ${pad(utcMinutes)} : ${pad(
           utcSeconds
         )}`;
@@ -680,18 +670,14 @@
           utcSeconds
         )} UTC`;
 
-        // Insert into HTML element
         document.getElementById('time-wib').textContent = wibString;
         document.getElementById('time-utc').textContent = utcString;
       }
 
-      // Run every 1 second
       setInterval(updateHeaderTime, 1000);
 
-      // Call directly so no wait 1 second on load
       updateHeaderTime();
 
-      // Hamburger menu toggle
       const hamburgerBtn = document.getElementById('hamburger-btn');
       const navMenu = document.getElementById('nav-menu');
       hamburgerBtn.addEventListener('click', () => {
@@ -700,5 +686,6 @@
     </script>
   </body>
 </html>
+
 
 
